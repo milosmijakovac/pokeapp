@@ -2,12 +2,12 @@ import React, { forwardRef } from 'react'
 import { Link } from 'react-router-dom';
 
 const PokemonThumb = forwardRef((props, ref) => {
-      // console.log(id, image, name, type)
+      
     //   {id, image, name, type, ref }
         const style = props.type + " thumb-container";
         return (
           
-        // <Link to={`/pokemon/${id}`}>
+        
             <div className={style} ref={ref}>
                   <div className="number"><small>#0{props.id}</small></div>
                   <Link to={`/pokemon/${props.id}`}><img src={props.image} alt={props.name} /></Link>
@@ -18,7 +18,7 @@ const PokemonThumb = forwardRef((props, ref) => {
                   </Link>
                     </div>
               </div>
-        //  </Link>
+    
         )
     }) 
 

@@ -1,6 +1,5 @@
-import React, { createRef } from "react";
+import React from "react";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import PokemonThumb from "../components/PokemonThumbnail/PokemonThumbnail";
 import SearchPokemon from "../components/SearchPokemon/SearchPokemon";
@@ -36,7 +35,6 @@ const Homepage = () => {
     const res = await fetch(loadMore);
     const data = await res.json();
 
-    console.log(data);
 
     setLoadMore(data.next);
     setIsLoading(false);
@@ -54,7 +52,6 @@ const Homepage = () => {
     }
 
     createPokemonObj(data.results);
-    console.log(allPokemons);
   };
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import React from 'react'
 import {useState} from 'react'
 
 
-const SearchPokemon = ({getChosenPokemon, searchPokemon}) => {
+const SearchPokemon = ({getChosenPokemon}) => {
   const [pokemonName, setPokemonName] = useState('')
 
 
@@ -11,7 +11,7 @@ const SearchPokemon = ({getChosenPokemon, searchPokemon}) => {
   return (
     <div className="search-bar">
       <h1>Choose Your Pokemon</h1>
-      <input type="text" onChange={e => setPokemonName(e.target.value)} />
+      <input type="text" onChange={e => setPokemonName(e.target.value.toLowerCase())} />
       <button onClick={() => {
         getChosenPokemon(pokemonName);
         

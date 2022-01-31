@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect, useRef, useCallback } from "react";
-import axios from "axios";
 import PokemonThumb from "../components/PokemonThumbnail/PokemonThumbnail";
 import SearchPokemon from "../components/SearchPokemon/SearchPokemon";
 import Spinner from "../components/Spinner/Spinner";

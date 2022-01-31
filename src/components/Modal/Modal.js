@@ -23,15 +23,13 @@ const Modal = ({ closeModal, allPokemons, specificType }) => {
               item?.data?.types?.[0]?.type?.name.includes(specificType)
             )
             .map(item => (
-              <>
-                <PokemonThumb
-                  key={item.data.id}
-                  id={item.data.id}
-                  image={item.data.sprites.other.dream_world.front_default}
-                  name={item.data.name}
-                  type={item.data.types[0].type.name}
-                />
-              </>
+              <PokemonThumb
+                key={item.data.id}
+                id={item.data.id}
+                image={item.data.sprites.other.dream_world.front_default}
+                name={item.data.name}
+                type={item.data.types[0].type.name}
+              />
             ))}
         </div>
       </div>

@@ -21,7 +21,7 @@ const SearchPokemon = ({ getChosenPokemon,  allPokemonButton}) => {
         Search
       </button>
       <div>
-        <button className="all-poke-btn" onClick={() => {allPokemonButton(""); setPokemonName("")}}>All Stars</button>
+        <button className="all-poke-btn" onClick={() => {allPokemonButton("")}}>All Stars</button>
       </div>
     </div>
   );

@@ -10,31 +10,39 @@ const Homepage = () => {
   const [loadMore, setLoadMore] = useState(
     "https://pokeapi.co/api/v2/pokemon?limit=20"
   );
-  const [chosenPokemonInput, setChosenPokemonInput] = useState("");
+  const [searchPokemonInput, setSearchPokemonInput] = useState("");
   const [chosenPokemon, setChosenPokemon] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    getAllPokemons();
+  }, []);
 
+  useEffect(() => {
+    searchPokemon();
+  }, [searchPokemonInput]);
 
   // Infinite scroll reaguje na poslednji element na dnu koji je vidljiv
   // tad se Loaduje jos pokemona
   const observer = useRef();
-  const lastPokemonElement = useCallback(node => {
-    if(isLoading) return
-    if(observer.current) observer.current.disconnect()
-    observer.current = new IntersectionObserver(entries => {
-      if(entries[0].isIntersecting) {
-        getAllPokemons()
-      }
-    })
-    if(node) observer.current.observe(node)
-  }, [isLoading]);
+  const lastPokemonElement = useCallback(
+    node => {
+      if (isLoading) return;
+      if (observer.current) observer.current.disconnect();
+      observer.current = new IntersectionObserver(entries => {
+        if (entries[0].isIntersecting) {
+          getAllPokemons();
+        }
+      });
+      if (node) observer.current.observe(node);
+    },
+    [isLoading]
+  );
 
   const getAllPokemons = async () => {
     setIsLoading(true);
     const res = await fetch(loadMore);
     const data = await res.json();
-
 
     setLoadMore(data.next);
     setIsLoading(false);
@@ -54,58 +62,79 @@ const Homepage = () => {
     createPokemonObj(data.results);
   };
 
-  useEffect(() => {
-    getAllPokemons();
-  }, []);
-
   const getChosenPokemon = pokemon => {
-    setChosenPokemonInput(pokemon);
+    setSearchPokemonInput(pokemon);
   };
 
-  const searchPokemon = () => {
-    axios
-      .get(`https://pokeapi.co/api/v2/pokemon/${chosenPokemonInput}`)
-      .then(res => setChosenPokemon(res));
+  const searchPokemon = async () => {
+    try {
+      const res = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${searchPokemonInput}`
+      );
+      const data = await res.json();
+      setChosenPokemon(data);
+    } catch (error) {
+      console.log(error, "No such pokemon");
+    }
   };
+
+  // const singlePokemonSearched = () => {
+  //   if (chosenPokemon.length !==0) {
+       
+     
+  //       <>
+  //         <PokemonThumb
+  //           // ref={lastPokemonElement}
+  //           key={chosenPokemon.id}
+  //           id={chosenPokemon.id}
+  //           image={chosenPokemon.sprites.other.dream_world.front_default}
+  //           name={chosenPokemon.name}
+  //           type={chosenPokemon.types[0].type.name}
+  //         />
+  //       </>
+      
+  //   }
+  //   setAllPokemons([]);
+  // };
 
   return (
-    <div className="app-contaner">
-      <SearchPokemon getChosenPokemon={getChosenPokemon} />
+    <div className="app-container">
       <div className="pokemon-container">
+        <SearchPokemon getChosenPokemon={getChosenPokemon} />
         <div className="all-container">
-          {isLoading && <Spinner />}
-          {!isLoading && allPokemons ? (
-            allPokemons.map((pokemonStats, index) => {
-              if (allPokemons.length === index + 1) {
-                return (
-                  <PokemonThumb
-                    ref={lastPokemonElement}
-                    key={pokemonStats.id}
-                    id={pokemonStats.id}
-                    image={pokemonStats.sprites.other.dream_world.front_default}
-                    name={pokemonStats.name}
-                    type={pokemonStats.types[0].type.name}
-                  />
-                );
-              } else {
-                return (
-                  <PokemonThumb
-                    key={pokemonStats.id}
-                    id={pokemonStats.id}
-                    image={pokemonStats.sprites.other.dream_world.front_default}
-                    name={pokemonStats.name}
-                    type={pokemonStats.types[0].type.name}
-                  />
-                );
-              }
-            })
-          ) : (
-            <h1>Choose your Pokemon</h1>
-          )}
+          {/* {chosenPokemon && singlePokemonSearched} */}
+          {isLoading ? <Spinner /> : null}
+          {!isLoading && allPokemons
+            ? allPokemons.map((pokemonStats, index) => {
+                if (allPokemons.length === index + 1) {
+                  return (
+                    <PokemonThumb
+                      ref={lastPokemonElement}
+                      key={pokemonStats.id}
+                      id={pokemonStats.id}
+                      image={
+                        pokemonStats.sprites.other.dream_world.front_default
+                      }
+                      name={pokemonStats.name}
+                      type={pokemonStats.types[0].type.name}
+                    />
+                  );
+                } else {
+                  return (
+                    <PokemonThumb
+                      key={pokemonStats.id}
+                      id={pokemonStats.id}
+                      image={
+                        pokemonStats.sprites.other.dream_world.front_default
+                      }
+                      name={pokemonStats.name}
+                      type={pokemonStats.types[0].type.name}
+                    />
+                  );
+                }
+              })
+            : null}
         </div>
-        <button className="load-more" onClick={() => getAllPokemons()}>
-          Load more
-        </button>
       </div>
     </div>
   );

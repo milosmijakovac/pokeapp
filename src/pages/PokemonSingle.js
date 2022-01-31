@@ -11,13 +11,13 @@ import Modal from "../components/Modal/Modal";
 import placeholderImg from '../assets/images/poke-place.jfif'
 
 const PokemonSingle = ({ id, image, name, type }) => {
-  // console.log({id, image, name, type })
+ 
 
   
   const location = useLocation();
   const { specificType } = location.state;
-  console.log(specificType);
 
+  
   const [allPokemons, setAllPokemons] = useState([]);
   const [singlePokemon, setSinglePokemon] = useState([]);
   const [pokemonType, setPokemonType] = useState([]);

@@ -78,34 +78,27 @@ const Homepage = () => {
     }
   };
 
-  // const singlePokemonSearched = () => {
-  //   if (chosenPokemon.length !==0) {
-       
-     
-  //       <>
-  //         <PokemonThumb
-  //           // ref={lastPokemonElement}
-  //           key={chosenPokemon.id}
-  //           id={chosenPokemon.id}
-  //           image={chosenPokemon.sprites.other.dream_world.front_default}
-  //           name={chosenPokemon.name}
-  //           type={chosenPokemon.types[0].type.name}
-  //         />
-  //       </>
-      
-  //   }
-  //   setAllPokemons([]);
-  // };
+  const allPokemonButton = (query) => {
+    setSearchPokemonInput(query)
+  };
+  
+
 
   return (
     <div className="app-container">
       <div className="pokemon-container">
-        <SearchPokemon getChosenPokemon={getChosenPokemon} />
+        <SearchPokemon getChosenPokemon={getChosenPokemon} allPokemonButton={allPokemonButton} />
         <div className="all-container">
-          {/* {chosenPokemon && singlePokemonSearched} */}
+          
           {isLoading ? <Spinner /> : null}
           {!isLoading && allPokemons
-            ? allPokemons.map((pokemonStats, index) => {
+            ? allPokemons
+            .filter(item => {
+              if(item.name.includes(searchPokemonInput)) {
+                return item
+              } 
+            })
+            .map((pokemonStats, index) => {
                 if (allPokemons.length === index + 1) {
                   return (
                     <PokemonThumb
